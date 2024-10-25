@@ -29,39 +29,60 @@ public class RegistrationAPI {
 
 	@GetMapping
 	public Iterable<Registration> getAll() {
-		//  Workshop:  Implementation to return existing registrations
-		return null;
+		// Workshop: Implementation to return existing registrations
+		return repo.findAll();
 	}
 
 	@GetMapping("/{registrationId}")
 	public Optional<Registration> getRegistrationById(@PathVariable("registrationId") long id) {
-		//  Workshop:  Implementation to return a single registration from an ID
-		return null;
+		// Workshop: Implementation to return a single registration from an ID
+		return repo.findById(id);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> addRegistration(@RequestBody Registration newRegistration, UriComponentsBuilder uri) {
-		//  Workshop:  Implementation to add a new registration; think about data validation and error handling.
-		return null;
+		// Workshop: Implementation to add a new registration; think about data
+		// validation and error handling.
+		if (newRegistration.getId() != 0 || newRegistration.getEvent_id() == null
+				|| newRegistration.getCustomer_id() == null || newRegistration.getRegistration_date() == null) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		newRegistration = repo.save(newRegistration);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(newRegistration.getId()).toUri();
+		ResponseEntity<?> response = ResponseEntity.created(location).build();
+		return response;
 	}
 
 	@PutMapping("/{eventId}")
-	public ResponseEntity<?> putRegistration(
-			@RequestBody Registration newRegistration,
-			@PathVariable("eventId") long eventId) 
-	{
+	public ResponseEntity<?> putRegistration(@RequestBody Registration newRegistration,
+			@PathVariable("eventId") long eventId) {
 		// Workshop: Implementation to update an event. Think about error handling.
-		return null;
-	}	
-	
+		if (newRegistration.getId() != eventId || newRegistration.getEvent_id() == null
+				|| newRegistration.getCustomer_id() == null || newRegistration.getRegistration_date() == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		newRegistration = repo.save(newRegistration);
+		return ResponseEntity.ok().build();
+	}
+
 	@DeleteMapping("/{eventId}")
 	public ResponseEntity<?> deleteRegistrationById(@PathVariable("eventId") long id) {
-		//  Workshop:  Implementation to delete an event.  For discussion (do not implement unless
-		//  you are sure you have time):  Are there checks you should make to ensure validity of 
-		//  data across various entities?  Where should these checks be implemented.  Are there
-		//  advantages and disadvantages to separating data into separate independent entities,
-		//  each with it's own "microservice"?
-		return null;
-	}	
-	
+		// Workshop: Implementation to delete an event. For discussion (do not implement
+		// unless
+		// you are sure you have time): Are there checks you should make to ensure
+		// validity of
+		// data across various entities? Where should these checks be implemented. Are
+		// there
+		// advantages and disadvantages to separating data into separate independent
+		// entities,
+		// each with it's own "microservice"?
+		if (!repo.existsById(id)) {
+			return new ResponseEntity<>("No events matched the request", HttpStatus.NOT_FOUND);
+		}
+		repo.deleteById(id);
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+	}
+
 }

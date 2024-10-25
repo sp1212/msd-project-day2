@@ -119,8 +119,5 @@ public class CustomerAPI {
 		}
 		repo.deleteById(id);
 		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-		
-	}	
-	
-	
+	}
 }

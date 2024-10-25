@@ -19,7 +19,7 @@ public class Registration {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
-	private int id;
+	private long id;
 	@Column(name="EVENT_ID")
 	private String event_id;
 	@Column(name="CUSTOMER_ID")
@@ -29,11 +29,11 @@ public class Registration {
 	@Column(name="NOTES")
 	private String notes;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

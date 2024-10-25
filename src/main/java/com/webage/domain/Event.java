@@ -16,7 +16,7 @@ public class Event {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
-	private int id;
+	private long id;
 	@Column(name="EVENT_CODE")
 	private String code;
 	@Column(name="TITLE")
@@ -24,11 +24,11 @@ public class Event {
 	@Column(name="DESCRIPTION")
 	private String description;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
