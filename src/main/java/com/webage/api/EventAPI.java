@@ -29,7 +29,7 @@ public class EventAPI {
 	@GetMapping
 	public Iterable<Event> getAll() {
 		//  Workshop:  Implement a method to retrieve all events
-		retrun null;
+		return null;
 	}
 
 	@GetMapping("/{eventId}")
