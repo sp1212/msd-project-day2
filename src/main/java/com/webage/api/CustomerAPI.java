@@ -68,17 +68,12 @@ public class CustomerAPI {
 		//  With the data model implemented in CustomersRepository, do you need to handle more than
 		//  one match per request?
 		Iterable<Customer> allCustomers = repo.findAll();
-		ArrayList<Customer> matchingCustomers = new ArrayList<Customer>();
 		for (Customer customer : allCustomers) {
 			if (username.equals(customer.getName())) {
-				matchingCustomers.add(customer);
+				return new ResponseEntity<>(customer, HttpStatus.OK);
 			}
 		}
-		
-		if (matchingCustomers.size() == 0) {
-			return new ResponseEntity<>("No customers matched the request", HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(matchingCustomers, HttpStatus.OK);
+		return new ResponseEntity<>("No customers matched the request", HttpStatus.NOT_FOUND);
 	}
 	
 	//lookupCustomerByName POST
