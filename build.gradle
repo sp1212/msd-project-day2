@@ -6,45 +6,43 @@ plugins {
 
 group = 'com.webage'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+//sourceCompatibility = '11'
+//mainClassName = "App"
 
 repositories {
-	mavenCentral()
+ mavenCentral()
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'org.hsqldb:hsqldb'
-	  // https://mvnrepository.com/artifact/com.auth0/java-jwt
-	implementation group: 'com.auth0', name: 'java-jwt', version: '3.8.0'
-	    // https://mvnrepository.com/artifact/org.json/json
-	implementation group: 'org.json', name: 'json', version: '20180813'
-	implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.4.1'
-	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.2.0'
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.2.0'
-	testImplementation group: 'junit', name: 'junit', version: '4.2'
-	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.0'
+ implementation 'org.springframework.boot:spring-boot-starter-web'
+ implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  runtimeOnly 'org.hsqldb:hsqldb'
+ implementation group: 'com.auth0', name: 'java-jwt', version: '3.8.0'
+ implementation group: 'org.json', name: 'json', version: '20180813'
+
+ testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation ('io.rest-assured:rest-assured:5.5.0' ){
+ exclude group: 'org.apache.groovy', module: 'groovy'
+ exclude group: 'org.apache.groovy', module: 'groovy-xml'
+ }
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
-    useJUnit()
-    reports.html.required = false // set gradle html report to false
-    reports.junitXml.required = false // set gradle junitXml report to false
-    // use testng testing framework
-    // useTestNG() {
-    //    useDefaultListeners = true
-    //     suites 'src/test/resources/testng.xml' // set testng.xml file path
-    // }
-    testLogging.showStandardStreams = true // output test log to console
-    testLogging.events "passed", "skipped", "failed" // deny output test log to console
+ useJUnitPlatform()
 }
 
+/*
 tasks.withType(Jar) {
-   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
    manifest {
       attributes["Main-Class"] = "com.webage.App"
    }
-}
-
+}*/
