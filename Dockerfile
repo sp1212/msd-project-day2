@@ -1,11 +1,8 @@
-FROM gradle as builder
-COPY --chown=gradle:gradle . /app
-WORKDIR /app
-RUN gradle bootJar
-
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk/openjdk11
 EXPOSE 8080
-VOLUME /tmp
-ARG LIBS=app/build/libs
-COPY --from=builder ${LIBS}/ /app/lib
-ENTRYPOINT ["java","-jar","./app/lib/spring-boot-jpa-0.0.1-SNAPSHOT.jar"]
+RUN mkdir /app
+COPY build/libs/msd-project-day2-0.0.1-SNAPSHOT.jar /app/data.jar
+
+ENV APIHOST=172.17.0.1:8080
+# ENV AUTHHOST=http://authsrv:8081
+ENTRYPOINT ["java","-jar","/app/data.jar"]
